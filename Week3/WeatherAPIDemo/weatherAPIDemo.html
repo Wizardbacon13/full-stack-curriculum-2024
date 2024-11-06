@@ -12,32 +12,57 @@
 		<h4 id='lat'></h4>
 		<h4 id='lon'></h4>
 		<h4 id='temp'></h4>
-		<button id='getTemp' onclick="getData()">Get Temperature for Austin, TX</button>
+		<button id='getTemp' onclick="getData()">Get Temperature of Austin TX</button>
 	</div>
 </body>
 
 <script>
-		const apiKey = "";
+		const apiKey = "6dc87f0d902ad7e89bffc74e3ba537ef";
 
 		let temp;
 		let lat;
 		let lon;
 
 		function getData() {
-			let apiCall = ``;
+			let apiCall = `http://api.openweathermap.org/geo/1.0/direct?q=Austin,TX,USA&limit=5&appid=6dc87f0d902ad7e89bffc74e3ba537ef${apiKey}`;
 			// get lat and long
+			fetch(apiCall)
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data);
+
+					console.log(data[0])
+					console.log(data[0].lat)
+					lat = data[0].lat
+					lon = data[0].lon
+
+					renderLatLon()
+					getTemp()
+				})
+
 			// get temp
 		}
 
 		function renderLatLon() {
+			document.querySelector("#lat").innerHTML = "Latitude " +lat
+			document.querySelector("#lon").innerHTML = "Longitude: " +lon
 		}
 
 		function getTemp() {
+			apiCall = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;			fetch(apiCall)
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data.main)
+
+					temp = data.main.getTemp
+					renderTemp()
+				})
 			
 		}
 
         
 		function renderTemp() {
+			document.querySelector("#temp").innerHTML = "temperature"
 		
 		}
 	</script>
